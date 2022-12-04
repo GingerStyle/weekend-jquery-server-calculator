@@ -2,6 +2,11 @@ $(onReady);
 
 //variable to hold the equation as the user types it in
 let inputString = '';
+let equation = {
+    firstNum: 0,
+    operator: '',
+    secondNum: 0,
+}
 
 function onReady(){
     console.log('jquery working');
@@ -32,7 +37,17 @@ function getInputString(){
             data: inputString,
         }).then(function(response){
             console.log('response from server', response);
-            appendToDOM(response);
+        }).catch(function(error){
+            alert(error.responseText);
+        });
+        $.ajax({
+            method: 'GET',
+            url: '/calculation',
+        }).then(function(result){
+            console.log('result form server:', result)
+            appendToDOM(result);
+        }).catch(function(err){
+            alert(err.responseText)
         });
     }else{
         inputString += character;
@@ -48,13 +63,12 @@ function appendToInputField(){
 
 function appendToDOM(calcResult){
     //add the result to the result-tag
-    $('#result-tag').append(`
-        ${calcResult}
-    `);
+    $('#result-tag').empty().append(`${calcResult}`);
     //add the equation to the history-list
     $('#history-list').append(`
         <li>
             ${inputString}
         </li>
     `);
+    inputString = '';
 }

@@ -10,13 +10,13 @@ app.listen(port, () => {
     console.log('listening on port', port);
 });
 
-
+let result = 0;
 
 //routes
 app.post('/calculation', function(req, res){
-    
+    result = req.body;
 });
 
 app.get('/calculation', function(req, res){
-
+    res.send(result);
 });
