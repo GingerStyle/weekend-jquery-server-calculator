@@ -1,6 +1,6 @@
 $(onReady);
 
-//variable to hold the equation as the user types it
+//variable to hold the equation as the user types it in
 let inputString = '';
 
 function onReady(){
@@ -9,7 +9,7 @@ function onReady(){
     $('#inputs').on('click', 'button', getInputString)
 }
 
-//function to get the value of the button typed and decide what to do with it
+//function to get the value of the button clicked and decide what to do with it
 function getInputString(){
     let character = this.id;
     console.log('character typed:', character);
@@ -21,17 +21,18 @@ function getInputString(){
     }else if(character == '+' || character == '-' || character == '*' || character == '/'){
         inputString += ` ${character} `;
         console.log('character is:', character);
-        appendToInputField(character);
+        appendToInputField();
         console.log('inputString:',inputString);
     }else if(character == '='){
         inputString = $('#calculation-field').val();
+        $('#calculation-field').val('');
         $.ajax({
             method: 'POST',
             url: '/calculation',
             data: inputString,
         }).then(function(response){
             console.log('response from server', response);
-            //getQuotes();
+            appendToDOM(response);
         });
     }else{
         inputString += character;
@@ -45,6 +46,15 @@ function appendToInputField(){
     $('#calculation-field').val(inputString);
 }
 
-function appendToDOM(){
-
+function appendToDOM(calcResult){
+    //add the result to the result-tag
+    $('#result-tag').append(`
+        ${calcResult}
+    `);
+    //add the equation to the history-list
+    $('#history-list').append(`
+        <li>
+            ${inputString}
+        </li>
+    `);
 }

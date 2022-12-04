@@ -14,7 +14,7 @@ app.listen(port, () => {
 
 //routes
 app.post('/calculation', function(req, res){
-
+    
 });
 
 app.get('/calculation', function(req, res){
