@@ -3,9 +3,7 @@ $(onReady);
 //variable to hold the equation as the user types it in
 let inputString = '';
 let equation = {
-    firstNum: 0,
-    operator: '',
-    secondNum: 0,
+    string: '',
 }
 
 function onReady(){
@@ -29,12 +27,12 @@ function getInputString(){
         appendToInputField();
         console.log('inputString:',inputString);
     }else if(character == '='){
-        inputString = $('#calculation-field').val();
+        equation.string = $('#calculation-field').val();
         $('#calculation-field').val('');
         $.ajax({
             method: 'POST',
             url: '/calculation',
-            data: inputString,
+            data: equation,
         }).then(function(response){
             console.log('response from server', response);
         }).catch(function(error){

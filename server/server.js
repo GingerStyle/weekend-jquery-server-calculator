@@ -1,4 +1,5 @@
 const express = require('express');
+const {evaluate} = require('mathjs');
 
 const app = express();
 const port = 5001;
@@ -14,9 +15,13 @@ let result = 0;
 
 //routes
 app.post('/calculation', function(req, res){
-    result = req.body;
+    console.log('server received:', req.body.string);
+    let equation = req.body.string;
+    result = evaluate(equation);
+    console.log('result now =',result);
+    
 });
 
 app.get('/calculation', function(req, res){
-    res.send(result);
+    res.send(String(result));
 });
